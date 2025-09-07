@@ -5,10 +5,11 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 type ThemeButton = {
     buttontitle: string;
     onPress: () => void;
+    bgColor?: string;
   };
-  const ThemeButton: React.FC<ThemeButton> = ({ buttontitle, onPress }) => {
+  const ThemeButton: React.FC<ThemeButton> = ({ buttontitle, onPress, bgColor }) => {
     return (
-        <TouchableOpacity style={styles.themebutton} activeOpacity={0.7} onPress={onPress}>
+        <TouchableOpacity style={[styles.themebutton, {backgroundColor: bgColor || 'transparent'}]} activeOpacity={0.7} onPress={onPress}>
           <Text style={styles.buttontitle}>{buttontitle}</Text>
         </TouchableOpacity>
       )

@@ -13,86 +13,101 @@ const Signup = () => {
   const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [selected, setSelected] = useState('user');
+
+  const roles = ['user', 'admin'];
 
   const handleSignup = async () => {
-  if (password !== confirmPassword) {
-    return Alert.alert('Error', 'Passwords do not match ❌');
-  }
+    if (password !== confirmPassword) {
+      return Alert.alert('Error', 'Passwords do not match ❌');
+    }
 
-  try {
-    const [firstName, ...lastParts] = fullName.trim().split(' ');
-    const lastName = lastParts.join(' ');
+    try {
+      const [firstName, ...lastParts] = fullName.trim().split(' ');
+      const lastName = lastParts.join(' ');
 
-    const res = await axios.post('http://localhost:5000/auth/signup', {
-      email,
-      password,
-      firstName,
-      lastName,
-      dateOfBirth: '1000-01-01',
-    });
-    console.log(res,"response from signup");
+      const res = await axios.post('https://upcoming-be.onrender.com/auth/signup/phone', {
+        email,
+        password,
+        firstName,
+        lastName,
+        phone: phoneNumber,
+        role: selected
+      });
+      console.log(res, "response from signup");
 
-    // await SecureStore.setItemAsync('access_token', res.data.access_token);
-    // await SecureStore.setItemAsync('refresh_token', res.data.refresh_token);
+      // await SecureStore.setItemAsync('access_token', res.data.access_token);
+      // await SecureStore.setItemAsync('refresh_token', res.data.refresh_token);
 
-    Alert.alert('Success ✅', 'Account created!');
-    router.replace('/(main)/(tabs)');
-  } catch (err: any) {
-    console.log(err);
-    console.log(err.response);
-    Alert.alert('Signup Failed ❌', err.response?.data?.message || 'Something went wrong');
-  }
-};
+      Alert.alert('Success ✅', 'Account created!');
+      router.replace('/(main)/(tabs)');
+    } catch (err: any) {
+      console.log(err);
+      console.log(err.response);
+      Alert.alert('Signup Failed ❌', err.response?.data?.message || 'Something went wrong');
+    }
+  };
 
   const onSignIn = () => {
     router.navigate("/signin");
   };
   const inputData = [
-  {
-    placeholder: "Enter your full name",
-    placeholderColor: "#fff",
-    autoCapitalize: "words",
-    autoCorrect: false,
-    contentType: "name",
-    keyboardType: "default",
-    value: fullName,
-    onChangeText: setFullName,
-  },
-  {
-    placeholder: "Enter your email",
-    placeholderColor: "#fff",
-    autoCapitalize: "none",
-    autoCorrect: false,
-    contentType: "emailAddress",
-    keyboardType: "email-address",
-    value: email,
-    onChangeText: setEmail,
-  },
-  {
-    placeholder: "Enter your password",
-    placeholderColor: "#fff",
-    autoCapitalize: "none",
-    autoCorrect: false,
-    contentType: "password",
-    keyboardType: "default",
-    secureTextEntry: true,
-    value: password,
-    onChangeText: setPassword,
-  },
-  {
-    placeholder: "Confirm your password",
-    placeholderColor: "#fff",
-    autoCapitalize: "none",
-    autoCorrect: false,
-    contentType: "password",
-    keyboardType: "default",
-    secureTextEntry: true,
-    value: confirmPassword,
-    onChangeText: setConfirmPassword,
-  },
-];
+    {
+      placeholder: "Enter your full name",
+      placeholderColor: "#fff",
+      autoCapitalize: "words",
+      autoCorrect: false,
+      contentType: "name",
+      keyboardType: "default",
+      value: fullName,
+      onChangeText: setFullName,
+    },
+    {
+      placeholder: "Enter your email",
+      placeholderColor: "#fff",
+      autoCapitalize: "none",
+      autoCorrect: false,
+      contentType: "emailAddress",
+      keyboardType: "email-address",
+      value: email,
+      onChangeText: setEmail,
+    },
+    {
+      placeholder: "Enter your phone number",
+      placeholderColor: "#fff",
+      autoCapitalize: "none",
+      autoCorrect: false,
+      contentType: "telephoneNumber",
+      keyboardType: "phone-pad",
+      value: phoneNumber,
+      onChangeText: setPhoneNumber,
+    },
+    {
+      placeholder: "Enter your password",
+      placeholderColor: "#fff",
+      autoCapitalize: "none",
+      autoCorrect: false,
+      contentType: "password",
+      keyboardType: "default",
+      secureTextEntry: true,
+      value: password,
+      onChangeText: setPassword,
+    },
+    {
+      placeholder: "Confirm your password",
+      placeholderColor: "#fff",
+      autoCapitalize: "none",
+      autoCorrect: false,
+      contentType: "password",
+      keyboardType: "default",
+      secureTextEntry: true,
+      value: confirmPassword,
+      onChangeText: setConfirmPassword,
+    },
+  ];
 
   return (
     <SafeAreaView style={{ flex: 1, position: "relative" }}>
@@ -110,9 +125,30 @@ const Signup = () => {
           </Text>
           <View className="gap-8 w-full mt-4">
             <View className="gap-4 w-full">
-              {inputData.map((data, index) => (
-                <InputField inputFieldInfo={data} key={index} />
-              ))}
+              <View className="gap-4 w-full">
+                {inputData.map((data, index) => (
+                  <InputField inputFieldInfo={data} key={index} />
+                ))}
+              </View>
+              <View >
+            <Text className="text-white mb-2">Select a Role</Text>
+            <View className='flex-row items-center gap-5'>
+                {roles.map((role) => (
+                    <TouchableOpacity
+                        className='flex-row items-center mb-2'
+                        key={role}
+                        onPress={() => setSelected(role)}
+                    >
+                        <View className='h-4 w-4 rounded-full border border-primary items-center justify-center mr-2'>
+                            {selected === role ? (
+                                <View className='h-2 w-2 rounded-full bg-primary' />
+                            ) : null}
+                        </View>
+                        <Text className='text-white capitalize'>{role}</Text>
+                    </TouchableOpacity>
+                ))}
+            </View>
+        </View>
             </View>
             <ThemeButton buttontitle="Create Account" onPress={handleSignup} />
             <View className="flex-row items-center justify-center gap-1">

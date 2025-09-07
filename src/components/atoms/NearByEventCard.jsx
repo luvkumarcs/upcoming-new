@@ -2,11 +2,11 @@ import imagePaths from '@/src/constants/imagePaths';
 import Entypo from '@expo/vector-icons/Entypo';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 const NearByEventCard = () => {
   return (
-    <View className=' rounded-2xl overflow-hidden'>
+    <TouchableOpacity activeOpacity={0.8} className=' rounded-2xl overflow-hidden'>
       <View className='w-full aspect-video'>
         <Image
           className='w-full h-full '
@@ -24,7 +24,7 @@ const NearByEventCard = () => {
           <Text className='text-title-12 font-medium text-grey78 capitalize'>dec 25, 7:00 PM</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

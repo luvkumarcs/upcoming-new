@@ -24,9 +24,12 @@ module.exports = {
     extend: {
       colors: {
         primary: "#ff6347",
+        "primary-100":"rgba(255, 99, 71, 0.1)",
         secondary: "#008000",
+        "secondary-100":"rgba(0, 128, 0, 0.1)",
         white: "#FFFFFF",
         black: "#1C2434",
+        grey78:"#787878",
         success: "#219653",
         danger: "#D34053",
         warning: "#FFA70B",
